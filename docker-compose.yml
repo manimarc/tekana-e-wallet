@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        env_file:
+        - .env
+        ports:
+        - "27017:27017"
+        environment:
+        - PUID=1000
+        - PGID=1000
+        - mongodb://localhost:27017/EWALLET
+        #     - POSTGRES_DB=DB
+        #     - POSTGRES_USER=USER
+        #     - POSTGRES_PASSWORD=PASSWORD
+        #     - PGGSSENCMODE=disable
+        volumes:
+            - "./mongodb/database:/data/db"
+volumes:
+    dbdata:
