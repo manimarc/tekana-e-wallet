@@ -1,35 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './dto/response/user-response.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/role.decorator';
+import { Role } from 'src/auth/role.enum';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  @UseGuards(JwtAuthGuard)
+  
   @Post()
+   
   async create(@Body() createUserDto: CreateUserDto):Promise<UserResponse> {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
+  // @Roles(Role.Admin)
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
-
+  @Roles(Role.Agent,Role.Admin)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles(Role.Admin)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

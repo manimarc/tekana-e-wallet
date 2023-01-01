@@ -21,7 +21,7 @@ export class User extends Document{
         unique: true
     })
     phone:string;
-    @Prop()
+    @Prop({default:'user'})
     role:string;
     @Prop()
     date:Date;

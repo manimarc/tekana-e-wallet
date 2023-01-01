@@ -12,10 +12,7 @@ services:
         - PUID=1000
         - PGID=1000
         - mongodb://localhost:27017/EWALLET
-        #     - POSTGRES_DB=DB
-        #     - POSTGRES_USER=USER
-        #     - POSTGRES_PASSWORD=PASSWORD
-        #     - PGGSSENCMODE=disable
+        
         volumes:
             - "./mongodb/database:/data/db"
 volumes:
