@@ -6,11 +6,7 @@ import { UserResponse } from 'src/users/dto/response/user-response.dto';
 
 export interface TokenPayload {
 userId : string;
-roles:string;
-// email:string;
-//     names:string;
-//      phone:string;
- 
+roles:string; 
 }
 
 @Injectable()
@@ -27,7 +23,6 @@ const expires = new Date();
 expires.setSeconds(expires.getDate()+ this.configService.get('JWT_EXPIRATION_TIME'));
 
 const token = this.jwtService.sign(tokenPayload);
-// console.log(token)
 response.cookie('Authentication',token,{httpOnly:true,expires})
   }
 }

@@ -24,11 +24,16 @@ export class UsersRepository{
         return await this.user.findById(userId);
     }
 
-    async getAllUsers():Promise<any>{
+    async getAllUsers():Promise<User[]>{
 return await this.user.find();
     }
 
     async deleteUser(id:string):Promise<User>{
 return await this.user.findByIdAndDelete(id);
+    }
+
+    async updateUser(id:string, data:any):Promise<any>{
+
+        return await this.user.findByIdAndUpdate(id,data,{new:true})
     }
 }

@@ -3,11 +3,9 @@ import {Response} from 'express';
 import { CurrentUser } from 'src/users/current-user.decorator';
 import { UserResponse } from 'src/users/dto/response/user-response.dto';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guards';
 import { Public } from './public.decorator';
-import { Roles } from './role.decorator';
-import { Role } from './role.enum';
+
 
 @Controller('auth')
 export class AuthController {

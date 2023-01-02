@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { UserRole, UserStatus } from "src/common";
 @Schema({versionKey:false})
 export class User extends Document{ 
     // @Prop()
@@ -21,19 +22,28 @@ export class User extends Document{
         unique: true
     })
     phone:string;
-    @Prop({default:'user'})
-    role:string;
+    @Prop(
+        
+        {default:UserRole.User,
+        type: String,
+        enum: UserRole,
+    })
+    role:UserRole;
     @Prop()
     date:Date;
-    @Prop()
-    amount: number;
-    @Prop()
-    currency: string;
-    @Prop()
-    status:string;
+    
+    @Prop({
+        type: String,
+         enum: UserStatus,
+         default:UserStatus.LOCKED
+      })
+    status:UserStatus;
 
     @Prop()
     last_login:Date;
+    @Prop()
+    updatedAt: Date;
+    updatedBy: string;
 
 }
 
