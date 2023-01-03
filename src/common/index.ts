@@ -10,3 +10,7 @@ export enum UserStatus {
     Agent = 'agent',
   }
   
+  export enum CurrencyUsed{
+    RWA = 'RWF',
+    USA = 'USD',
+  }

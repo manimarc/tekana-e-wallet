@@ -3,8 +3,6 @@ import { Document } from "mongoose";
 import { UserRole, UserStatus } from "src/common";
 @Schema({versionKey:false})
 export class User extends Document{ 
-    // @Prop()
-    // user_id:number;
     @Prop()
     names:string;
     @Prop({
@@ -43,6 +41,7 @@ export class User extends Document{
     last_login:Date;
     @Prop()
     updatedAt: Date;
+    @Prop()
     updatedBy: string;
 
 }
