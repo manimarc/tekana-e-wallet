@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/role.guards';
 import { WalletModule } from './wallet/wallet.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { WalletModule } from './wallet/wallet.module';
   }),
     UsersModule,
     AuthModule,
-    WalletModule],
+    WalletModule,
+    TransactionsModule],
   controllers: [AppController],
   providers: [AppService,
     {

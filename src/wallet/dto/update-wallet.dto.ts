@@ -7,4 +7,6 @@ export class UpdateWalletDto extends PartialType(CreateWalletDto) {
     updatedAt: Date;
     @IsString()
     updatedBy:string;
+
+    
 }

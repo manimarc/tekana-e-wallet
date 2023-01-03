@@ -48,9 +48,9 @@ if(!wallet){
  return {wallet,user};
   }
 
-  async update(id: string, updateWalletDto: UpdateWalletDto,userId:string):Promise<Wallet> {
+  async update(id: string, updateWalletDto: UpdateWalletDto,userId:string):Promise<any> {
 
-    return await this.walletRepository.updateWallet(id,{...updateWalletDto,updatedBy:userId,updatedAt:new Date()});
+    return await this.walletRepository.updateWallet(id,{balance:updateWalletDto.balance,currency:updateWalletDto.currency,updatedBy:userId,updatedAt:new Date()});
   }
 
   remove(id: string) {

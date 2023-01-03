@@ -14,3 +14,21 @@ export enum UserStatus {
     RWA = 'RWF',
     USA = 'USD',
   }
+
+  export enum TransactionStatus {
+    SUCCESS = 'SUCCESS',
+    FAIL = 'FAIL',
+  
+  }
+
+  export enum WalletTypes {
+    DEPOSIT = 'DEPOSIT',
+    PAYMENT = 'PAYMENT',
+    TRANSFER='TRANSFER',
+    LOAN = 'LOAN',
+    WITHDRAW = 'WITHDRAW',
+    FINE ='FINE',
+    CHECKS ='CHECKS',
+    BORROWING='BORROWING'
+  
+  }

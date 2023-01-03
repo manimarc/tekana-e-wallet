@@ -12,6 +12,7 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
 @Module({
   imports:[UsersModule,MongooseModule.forFeature([{name:Wallet.name,schema:WalletSchema},{name:User.name,schema:UserSchema}])],
   controllers: [WalletController],
-  providers: [WalletService,WalletRepository,UsersService]
+  providers: [WalletService,WalletRepository,UsersService],
+  exports: [WalletRepository]
 })
 export class WalletModule {}
