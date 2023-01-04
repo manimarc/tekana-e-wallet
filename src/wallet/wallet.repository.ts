@@ -10,34 +10,53 @@ export class WalletRepository{
         private readonly wallet: Model<Wallet>
     ){}
     async insertOne(data:Partial<Wallet>):Promise<any>{
-        const wallet = await new this.wallet(data);
-        return wallet.save()
+        try{
+          const wallet = await new this.wallet(data);
+        return wallet.save()  
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
+        
     }
 
   
     async findWalletByUserId(userId:string):Promise<Wallet>{
-        const wallet = await this.wallet.findOne({user_id:userId});
+        try{
+             const wallet = await this.wallet.findOne({user_id:userId});
         if(!wallet){
             throw new BadRequestException(`Wallet for userid: ${userId} not found!!!!`);
         }
         return wallet;
+        }catch(err){
+            throw new BadRequestException(err);
+        }
+       
     }
 
     async getWalletByCurrencyAndUserId(userId:string, currencyCode:string):Promise<any>{
-        const wallet = await this.wallet.find( {$and: [{user_id:userId,currency:currencyCode} ]});
+        try{
+            const wallet = await this.wallet.find( {$and: [{user_id:userId,currency:currencyCode} ]});
         if(!wallet){
             throw new BadRequestException(`Wallet for userid: ${userId} and currency: ${currencyCode} not found!!!`);
         }
 
         return wallet
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
+        
     }
     
     async getWalletById(id:string):Promise<Wallet>{
+        try{
         const wallet = await this.wallet.findById(id);
         if(!wallet){
             throw new BadRequestException(`Wallet with _id: ${id} not found!!.`);
         }
         return wallet;
+    }catch(err){
+        throw new BadRequestException(err.message);
+    }
     }
 
     async getAllWallet():Promise<Wallet[]>{
@@ -45,14 +64,25 @@ return await this.wallet.find();
     }
 
     async deleteWallet(id:string):Promise<Wallet>{
-return await this.wallet.findByIdAndDelete(id);
+        try{
+       return await this.wallet.findByIdAndDelete(id);     
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
+
     }
 
     async updateWallet(id:string, data:any):Promise<Wallet>{
-        const wallet = await this.wallet.findByIdAndUpdate(id,data,{new:true});
+        try{
+           const wallet = await this.wallet.findByIdAndUpdate(id,data,{new:true});
         if(!wallet){
             throw new BadRequestException(`Wallet with _id: ${id} not found!!.`);
         }
-        return wallet;
+        return wallet; 
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
+        
     }
+
 }

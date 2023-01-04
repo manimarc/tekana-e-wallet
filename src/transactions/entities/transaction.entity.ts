@@ -39,6 +39,12 @@ status:TransactionStatus;
 balance_before_debited:number;
 @Prop()
 balance_after_debited:number;
+
+@Prop()
+balance_before_credited:number;
+@Prop()
+balance_after_credited:number;
+
 @Prop()
 wallet_credited:string;
 

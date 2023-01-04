@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import { UsersService } from 'src/users/users.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
@@ -53,7 +53,27 @@ if(!wallet){
     return await this.walletRepository.updateWallet(id,{balance:updateWalletDto.balance,currency:updateWalletDto.currency,updatedBy:userId,updatedAt:new Date()});
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} wallet`;
+  async remove(id: string):Promise<Wallet> {
+    const wallet = await this.walletRepository.deleteWallet(id);
+    if(!wallet){
+      throw new BadRequestException(`Error occurred deliting wallet!!!`);
+    }
+    return  wallet;
   }
+
+ async  depositWallet(id: string, updateWalletDto: UpdateWalletDto,userId:string):Promise<any> {
+  try{
+  const wallet = await this.walletRepository.getWalletById(id);
+  if(!wallet){
+      throw new BadRequestException(`Wallet _id: ${id} not found!!!`);
+  }
+  const currentBalance = wallet.balance;
+  if(wallet.currency !== updateWalletDto.currency){
+    throw new BadRequestException(`You are depositing amount of ${updateWalletDto.currency} currency into account with ${wallet.currency} currency!!!`);
+  }
+  return await this.walletRepository.updateWallet(id,{balance:currentBalance + updateWalletDto.balance,updatedBy:userId,updatedAt:new Date()});
+ }catch(err){
+  throw new BadRequestException(err.message);
+ }
+ }
 }

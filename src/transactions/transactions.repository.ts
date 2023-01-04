@@ -12,49 +12,77 @@ export class TransactionsRepository{
         private readonly transaction: Model<Transaction>
     ){}
     async insertOne(data:Partial<Transaction>):Promise<any>{
+        try{
         const transaction = await new this.transaction(data);
-        return transaction.save()
+        return transaction.save();
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
     }
 
   
-    async findWalletByUserId(userId:string):Promise<Transaction>{
+    async findTransactionByUserId(userId:string):Promise<Transaction>{
+        try{
         const transaction = await this.transaction.findOne({user_id:userId});
         if(!transaction){
             throw new BadRequestException(`transaction for userid: ${userId} not found!!!!`);
         }
         return transaction;
+    }catch(err){
+        throw new BadRequestException(err.message);
+    }
     }
 
-    async getWalletByCurrencyAndUserId(userId:string, currencyCode:string):Promise<any>{
+    async getTransactionByCurrencyAndUserId(userId:string, currencyCode:string):Promise<any>{
+        try{
         const transaction = await this.transaction.find( {$and: [{user_id:userId,currency:currencyCode} ]});
         if(!transaction){
             throw new BadRequestException(`transaction for userid: ${userId} and currency: ${currencyCode} not found!!!`);
         }
 
         return transaction
+    }catch(err){
+        throw new BadRequestException(err.message);
+    }
     }
     
-    async getWalletById(id:string):Promise<Transaction>{
+    async getTransactionById(id:string):Promise<Transaction>{
+        try{
         const transaction = await this.transaction.findById(id);
         if(!transaction){
             throw new BadRequestException(`transaction with _id: ${id} not found!!.`);
         }
         return transaction;
+    }catch(err){
+        throw new BadRequestException(err.message);
+    }
     }
 
-    async getAllWallet():Promise<Transaction[]>{
-return await this.transaction.find();
+    async getAllTransaction():Promise<Transaction[]>{
+        try{
+            return await this.transaction.find();
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
     }
 
-    async deleteWallet(id:string):Promise<Transaction>{
+    async deleteTransaction(id:string):Promise<Transaction>{
+        try{
 return await this.transaction.findByIdAndDelete(id);
+        }catch(err){
+            throw new BadRequestException(err.message);
+        }
     }
 
-    async updateWallet(id:string, data:any):Promise<Transaction>{
+    async updateTransaction(id:string, data:any):Promise<Transaction>{
+        try{
         const transaction = await this.transaction.findByIdAndUpdate(id,data,{new:true});
         if(!transaction){
             throw new BadRequestException(`transaction with _id: ${id} not found!!.`);
         }
         return transaction;
+    }catch(err){
+        throw new BadRequestException(err.message);
+    }
     }
 }

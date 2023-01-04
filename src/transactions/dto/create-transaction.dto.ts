@@ -18,6 +18,11 @@ status:TransactionStatus;
 balance_before_debited:number;
 @IsNumber()
 balance_after_debited:number;
+
+@IsNumber()
+balance_before_credited:number;
+@IsNumber()
+balance_after_credited:number;
 @IsString()
 wallet_credited:string;
 

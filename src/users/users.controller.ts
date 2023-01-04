@@ -6,12 +6,13 @@ import { UserResponse } from './dto/response/user-response.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from 'src/auth/role.decorator';
 import { Role } from 'src/auth/role.enum';
+import { Public } from 'src/auth/public.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @UseGuards(JwtAuthGuard)
-  
+  @Public()
   @Post()
    
   async create(@Body() createUserDto: CreateUserDto):Promise<UserResponse> {
