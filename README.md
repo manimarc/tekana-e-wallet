@@ -1,73 +1,102 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
+# Tekana-e-wallet Project READYME
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Action Plan 
+### Day 1-4
+#### Gather requirements analysis from users (User stories)
+- As a wallet user I want a system that allows me to perform online registration so that i can start using it
+- As a wallet user I want a system that allows me login so that i feel confident of my wallet security
+- As a wallet user I want an interface that allows me to transfer wallet from my accounts to another user's account so that so that payments become easy
+- As a wallet user I want a interface that allows me to create wallet with different currency so that I can store wallet in diffent currency.
+- As wallet Agent I want a system that allows me to create and update a user so that user managent become easy
+- As a wallet agent I want a system that allows me to deposit user's wallet on their accounts so that their accounts being used
+- As a wallet agent I want an interface that allows me to fetch user's account so that i will be able to perform wallet deposit or transaction
+As wallet administrator I want a system that allows me to list all users so that i can manager them
+- As a wallet administrator I want a system that allows me to list all wallet accounts so that i can manage users' wallets
+- As a wallet administrator I want a system that allows to list all transaction so that i can manage all users' transactions 
+#### Design the database structure
+- The link is provided at then of the document
+- The link can also be accessible to : [database structure](https://dbdiagram.io/d/63b5a4bc7d39e42284e8eb82)
+#### Adopt Agile SDLC model (by priotirizing the requirements based on user story, develop and deliver the finished product)
+- As I work in a team and adopting agile SDLC model scrum is preferable so that scrum master will be able to monitor the progress of the project
+- different tools to monitor the project and allow the whole team to know the progress are available such as Jira, ClickUp, ...
+#### Choose the best technology to handle 1 million of users.
+- Server : Linux (Ubuntu prefered)
+- Docker image (to allow easy installation and configuration)
+- Nestjs
+- Typescript
+- MongoDb (due to its scalability and performance compared to structured query languages)
+## Day 5-8
+- Create Users end-points
+- Perform Authentication and Authorization
+- Create Wallet end-points
+- Create Transaction end-points
+## Day 8-9
+#### End points documentation
+
+| ADDRESS:://{ }                             | METHOD | NOTES                                                                                | REQUEST                                                           | RESPONSE                                                                                                                                                                                              |
+| ------------------------------------------ | ------ | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| auth/login                           | post   | Client browser receives a Authentication as a cookie                                    | {<br>email: string,<br>password: string,<br>}                      | HTTP: 200 OK<br>{<br>_id: string,<br>email: string,<br>names:string,<br>phone:string,<br>role:string,<br>status:string,<br>}                                                                                                                                             |
+| /auth/sign-up                           | post   | Client browser receives a session\_id as a cookie                                    | {<br>names: string,<br>email: string,<br>password: string<br>phone:string<br>} | HTTP: 201 CREATED<br>{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}                                                                                                                                        |
+| /users                      | get    | Returns all users user                                                               |                                                                   | HTTP: 200 OK<br>{<br>_id_: string,<br>names: string,<br>emaiil: string,<br>phone: string<br>}                                                                                                   |
+| /users/{id}                           | get   | Client browser receives a session\_id as a cookie                                    |  | HTTP: 200 Ok<br>{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}                                                                                                                                        |
+
+| /users                          | post   | Client browser receives a session\_id as a cookie                                    | {<br>names: string,<br>email: string,<br>password: string<br>phone:string<br>} | HTTP: 201 CREATED<br>{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}                                                                                                                                        |
+
+| /users/{id}                         | patch   | Client browser receives a session\_id as a cookie                                    | {<br>names: string,<br>email: string,<br>password: string<br>phone:string<br>} | HTTP: 201 CREATED<br>{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}                                                                                                                                        |
+
+
+| /wallet               | post   | Creates a new wallet, login required                                             | {<br>balance: number<br>currency: string,<br> user_id:string} | HTTP: 201 CREATED<br>[wallet:{<br>_id:string<br>balance: number,<br>currency: string,<br>user_id:string,<br>},user:{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}]                                                                                                                                                                   |
+| /wallet/{id}               | get    | Returns user wallet by id  , login required                                                                  | HTTP: 200 OK<br>\[wallet:{<br>_id:string<br>balance: number,<br>currency: string,<br>user_id:string,<br>},user:{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}]        |
+| /wallet/userid               | get    | Returns user wallet by user_id  , login required, {userId} query params |                                                                   | HTTP: 200 OK<br>\[wallet:{<br>_id:string<br>balance: number,<br>currency: string,<br>user_id:string,<br>},user:{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}]        |
+
+| /wallet/userid_currency                | get    | Returns user wallet by user_id and currency , login required, {userId, currency} query params |                                                                   | HTTP: 200 OK<br>\[wallet:{<br>_id:string<br>balance: number,<br>currency: string,<br>user_id:string,<br>},user:{<br>_id:string<br>email: string<br>names: string<br>role:string<br>status:string}]        |
+
+
+| /transactions | post   | Creates new wallet transanction for user or customer, login required                                    |                                                                   | HTTP: OK                                                                                                                                                                                              |
+
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Tekana-e-wallet system is a system that will allow all users around the world to transfer, send, receive, deposit, pay, borrow wallet with an easy way.
 
 ## Installation
 
 ```bash
-$ npm install
+
+# Download and install Mongodb image using docker composer
+$ sudo docker-compose up   -d
+# packages using yarn for the app
+$ yarn install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn run start
 
 # watch mode
-$ npm run start:dev
+$ yarn run start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn run start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ yarn run test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn run test:cov
 ```
 
-## Support
+## MOngodb design
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+![database structure](wallet%20db%20design.png)
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
