@@ -70,6 +70,8 @@ $ yarn run start
 
 # watch mode
 $ yarn run start:dev
+# seeding the data for user credential
+$ sudo npx nestjs-command create:user
 
 # production mode
 $ yarn run start:prod

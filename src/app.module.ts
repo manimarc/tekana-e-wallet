@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/role.guards';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { SeedsModule } from './seeder.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     UsersModule,
     AuthModule,
     WalletModule,
-    TransactionsModule],
+    TransactionsModule,SeedsModule],
   controllers: [AppController],
   providers: [AppService,
     {
