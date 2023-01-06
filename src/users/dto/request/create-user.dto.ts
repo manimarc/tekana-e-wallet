@@ -13,6 +13,8 @@ export class CreateUserDto {
     @IsString()
     phone:string;
      @IsDate()
-    date:Date;
+    createdAt:Date;
+    @IsString()
+    createdBy:string;
     
 }

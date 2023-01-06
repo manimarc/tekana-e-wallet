@@ -1,6 +1,4 @@
 # Tekana-e-wallet Project READYME
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 ## Action Plan 
 ### Day 1-4
 #### Gather requirements analysis from users (User stories)
@@ -28,7 +26,7 @@ As wallet administrator I want a system that allows me to list all users so that
 - MongoDb (due to its scalability and performance compared to structured query languages)
 ## Day 5-8
 - Create Users end-points
-- Perform Authentication and Authorization
+- Perform Authentication(username and possword, token should be accessible using http only to avoid hackers accessing it using javascript, encrypt the password using bcrypt library ) and Authorization (limiting some resources based on user role).
 - Create Wallet end-points
 - Create Transaction end-points
 ## Day 8-9
@@ -94,3 +92,7 @@ $ yarn run test:cov
 
 ![database structure](wallet%20db%20design.png)
 
+## Version plan
+1. Refund customers
+2. convert one currency to another
+3. perform end to end testing

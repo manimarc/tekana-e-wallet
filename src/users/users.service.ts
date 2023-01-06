@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import {hash,compare} from 'bcrypt';
 import { UserStatus } from 'src/common';
 import { CreateUserDto } from './dto/request/create-user.dto';
@@ -10,13 +10,15 @@ import { UsersRepository } from './users.repository';
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository:UsersRepository){}
-  async create(createUserDto: CreateUserDto):Promise<UserResponse> {
+  async create(userId:string,createUserDto: CreateUserDto):Promise<UserResponse> {
     await this.validateCreateUserEmail(createUserDto);
 
     const user= await this.usersRepository.insertOne({...createUserDto,
-    password:await hash(createUserDto.password,10),});
+    password:await hash(createUserDto.password,10),status:UserStatus.OPEN, createdAt:new Date(),createdBy:userId});
      return this.buildResponse(user);
   }
+
+
   async validateUser(email:string,password:string):Promise<UserResponse>{
     const user = await this.usersRepository.findUserByEmail(email);
  if(!user){

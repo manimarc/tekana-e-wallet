@@ -32,6 +32,9 @@ export class TransactionsService {
    if(!wallet_cred){
     throw new BadRequestException(`The specified account #: ${createTransactionDto.wallet_credited} for ${createTransactionDto.type} not found!!`);
    }
+   if(createTransactionDto.wallet_credited ===createTransactionDto.wallet_debited){
+    throw new BadRequestException(`Wallet debited #: ${createTransactionDto.wallet_debited} and Wallet credited #: ${createTransactionDto.wallet_credited} are the same!!!`);
+   }
    const isSuccessTrans = await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transactioonRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
     balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount});
    if(!isSuccessTrans){

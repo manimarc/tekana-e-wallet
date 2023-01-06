@@ -6,6 +6,7 @@ export class User extends Document{
     @Prop()
     names:string;
     @Prop({
+        type:String,
         required: true,
         index: true,
         unique: true
@@ -28,7 +29,7 @@ export class User extends Document{
     })
     role:UserRole;
     @Prop()
-    date:Date;
+    createdAt:Date;
     
     @Prop({
         type: String,
@@ -43,6 +44,8 @@ export class User extends Document{
     updatedAt: Date;
     @Prop()
     updatedBy: string;
+    @Prop()
+    createdBy:string;
 
 }
 
