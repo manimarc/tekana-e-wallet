@@ -7,13 +7,14 @@ services:
         env_file:
         - .env
         ports:
-        - "27017:27017"
+        - ${DB_PORT}:${DB_PORT}
         environment:
         - PUID=1000
         - PGID=1000
-        - mongodb://localhost:27017/EWALLET
+        - mongodb://${DB_HOST}:${DB_PORT}/EWALLET
         
         volumes:
             - "./mongodb/database:/data/db"
+        restart: always
 volumes:
     dbdata:

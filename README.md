@@ -55,7 +55,8 @@ Tekana-e-wallet system is a system that will allow all users around the world to
 ## Installation
 
 ```bash
-
+# copy .env.example into .env for environment configuration
+$ sudo cp .env.example  .env
 # Download and install Mongodb image using docker composer
 $ sudo docker-compose up   -d
 # packages using yarn for the app
@@ -71,6 +72,8 @@ $ yarn run start
 # watch mode
 $ yarn run start:dev
 # seeding the data for user credential
+$ sudo yarn nestjs-command create:user
+# or seeding the data for user credential with
 $ sudo npx nestjs-command create:user
 
 # production mode
