@@ -14,8 +14,9 @@ export class WalletService {
   async create(createWalletDto: CreateWalletDto,userId:string):Promise<Wallet> {
     let {user_id,...rest} = createWalletDto;
     const isUniqueUserAndCurrency = await this.walletRepository.getWalletByCurrencyAndUserId(user_id,rest.currency);
-    if(isUniqueUserAndCurrency){
-      throw new BadRequestException(`Wallet account should be unique for currency: ${rest.currency}. instead use wallet _id: ${isUniqueUserAndCurrency[0]._id} !!!`);
+    console.log("marc:"+isUniqueUserAndCurrency.length);
+    if(isUniqueUserAndCurrency.length>0 ){
+      throw new BadRequestException(`Wallet account should be unique for currency: ${rest.currency}. instead use wallet _id: ${isUniqueUserAndCurrency[0]} !!!`);
     }
     return  this.walletRepository.insertOne({...rest,user_id:userId});
   }

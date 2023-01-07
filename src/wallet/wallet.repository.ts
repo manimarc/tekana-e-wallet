@@ -36,11 +36,7 @@ export class WalletRepository{
     async getWalletByCurrencyAndUserId(userId:string, currencyCode:string):Promise<any>{
         try{
             const wallet = await this.wallet.find( {$and: [{user_id:userId,currency:currencyCode} ]});
-        if(!wallet){
-            throw new BadRequestException(`Wallet for userid: ${userId} and currency: ${currencyCode} not found!!!`);
-        }
-
-        return wallet
+         return wallet
         }catch(err){
             throw new BadRequestException(err.message);
         }

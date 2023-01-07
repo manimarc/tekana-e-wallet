@@ -12,7 +12,6 @@ export class WalletController {
 
   @Post()
   async create(@Req() req, @Body() createWalletDto: CreateWalletDto):Promise<Wallet> {
-console.log(createWalletDto)
 const wallet = await this.walletService.create(createWalletDto,req.user._id);
     return  wallet;
   }
