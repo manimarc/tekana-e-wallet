@@ -1,5 +1,5 @@
 import { IsDate, IsNumber, IsString } from "class-validator";
-import { TransactionStatus, WalletTypes } from "src/common";
+import { CurrencyUsed, TransactionStatus, WalletTypes } from "src/common";
 
 export class CreateTransactionDto {
 
@@ -33,7 +33,9 @@ wallet_debited:string;
 fee_or_charges:number;
 
 @IsString()
-currency:string;
+currency_credited:CurrencyUsed;
+@IsString()
+currency_debited:CurrencyUsed;
 @IsDate()
 createdAt:Date;
 @IsString()

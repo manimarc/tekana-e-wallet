@@ -18,7 +18,7 @@ import { SeedsModule } from './seeder.module';
     MongooseModule.forRootAsync({
     imports:[ConfigModule],
     useFactory:async(configService:ConfigService)=>({
-      uri:configService.get<String>('MONGODB_URI')
+      uri:configService.get<String>('MONGODB_URI'),
     }),
     inject:[ConfigService]
   }),

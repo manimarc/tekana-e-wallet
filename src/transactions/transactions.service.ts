@@ -29,6 +29,12 @@ export class TransactionsService {
    if(wallet_cred.currency !== wallet_deb.currency){
     throw new BadRequestException(`Credited account's currency : ${wallet_cred.currency} is not the same as debited account's currency: ${wallet_deb.currency} `);
    }
+   if(wallet_cred.currency !== createTransactionDto.currency_credited){
+    throw new BadRequestException(`The specified currrencies are different!!!!`);
+   }
+   if(wallet_deb.currency !== createTransactionDto.currency_debited){
+    throw new BadRequestException(`The specified currrencies are different!!!!`);
+   }
    if(!wallet_cred){
     throw new BadRequestException(`The specified account #: ${createTransactionDto.wallet_credited} for ${createTransactionDto.type} not found!!`);
    }
