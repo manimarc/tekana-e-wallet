@@ -1,3 +1,38 @@
+* # Feedback from Lionel 
+
+* The code is not properly indented, hence low readability (Use EsLint for VsCode)
+* The code still has some debug line of code. (console.log(.....)
+* The error message shouldbe 404 not 400. [Check Best practices](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+```
+  async findOne(id: string) {
+    const wallet = await this.walletRepository.getWalletById(id);
+    if(!wallet){
+      throw new BadRequestException(`Wallet for _id: ${id} not found!!`);
+    }
+```
+* Logic: This transaction reference algorithm should be in a separate function and the logic is not correct, you may find conflicting transaction references ( 
+
+```
+const transactioonRef =createTransactionDto.type.substring(0,3)+ new Date().getFullYear() + new Date().getMonth()+ new Date().getDay() + new Date().getHours()+ new Date().getMinutes();// We can have duplicates. 
+```
+
+* Performance:This should be run in one call for performance otherwise you are not using the power of asynchronous language. [Check documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+```
+const wallet_deb = await this.walletRepository.getWalletById(createTransactionDto.wallet_debited);
+const wallet_cred = await this.walletRepository.getWalletById(createTransactionDto.wallet_credited);
+```
+* Logic: The db inserts and updates are not run in a transaction, therefore it would be terrible for a financial system as there is no proper rollback in case of failure(network, db, app restarts,etc...) [Understand transaction](https://www.tutorialspoint.com/dbms/dbms_transaction.htm)
+
+* Performance: The function `createTransaction` is the key to this exercise and it seems that it has many `await` function. This is not in favor or server resource optimization, and performance.
+
+
+Summary:
+* Read about HTTP status code best practices
+* Code readability is key to maintainability
+* Try to optimize the queries to DB( That is when you launch is system and it starts becoming slow after 2000 users are onboarded)
+* Use DB optimization tricks to increase the performance.
+
 # Tekana-e-wallet Project READYME
 ## Action Plan 
 ### Day 1-4
