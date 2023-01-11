@@ -13,10 +13,12 @@ export class TransactionsService {
     private readonly walletRepository:WalletRepository,private readonly walletService:WalletService){}
   async create(createTransactionDto: CreateTransactionDto,userId:string):Promise<any> {
     try{
-   const transanctionRef = this.createReference(createTransactionDto.type);
+   const PromisetransanctionRef = this.createReference(createTransactionDto.type);
    
-    const wallet_deb = await this.walletRepository.getWalletById(createTransactionDto.wallet_debited);
-    const wallet_cred = await this.walletRepository.getWalletById(createTransactionDto.wallet_credited);
+     const PromiseWallet_deb =  this.walletRepository.getWalletById(createTransactionDto.wallet_debited);
+    const promiseWallet_cred =  this.walletRepository.getWalletById(createTransactionDto.wallet_credited);
+
+    const [wallet_deb,wallet_cred,transanctionRef] = await Promise.all([PromiseWallet_deb,promiseWallet_cred,PromisetransanctionRef]);
     //find the current balance for debited wallet
     const balance_debit = wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges);
    
