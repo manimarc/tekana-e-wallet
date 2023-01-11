@@ -81,3 +81,4 @@ updatedBy:string;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+TransactionSchema.index({_id:1,reference_id:1},{unique:true});

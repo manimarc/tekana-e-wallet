@@ -34,3 +34,4 @@ export class Wallet extends Document{
 }
 
 export const WalletSchema = SchemaFactory.createForClass(Wallet);
+WalletSchema.index({_id:1,user_id:1});

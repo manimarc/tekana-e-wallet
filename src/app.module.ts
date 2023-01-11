@@ -19,6 +19,7 @@ import { SeedsModule } from './seeder.module';
     imports:[ConfigModule],
     useFactory:async(configService:ConfigService)=>({
       uri:configService.get<String>('MONGODB_URI'),
+      useCreateIndex: true,
     }),
     inject:[ConfigService]
   }),
