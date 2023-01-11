@@ -13,8 +13,7 @@ export class TransactionsService {
     private readonly walletRepository:WalletRepository,private readonly walletService:WalletService){}
   async create(createTransactionDto: CreateTransactionDto,userId:string):Promise<any> {
     try{
-    const transactioonRef =createTransactionDto.type.substring(0,3)+ new Date().getFullYear() + new Date().getMonth()+ new Date().getDay() + new Date().getHours()+ new Date().getMinutes();
-   
+   const transanctionRef = this.createReference(createTransactionDto.type);
    
     const wallet_deb = await this.walletRepository.getWalletById(createTransactionDto.wallet_debited);
     const wallet_cred = await this.walletRepository.getWalletById(createTransactionDto.wallet_credited);
@@ -22,7 +21,7 @@ export class TransactionsService {
     const balance_debit = wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges);
    
      if(wallet_deb.balance < (createTransactionDto.debited_amount + createTransactionDto.fee_or_charges)){
-    await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transactioonRef,createdAt:new Date(),createdBy:userId, status:TransactionStatus.FAIL});
+    await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId, status:TransactionStatus.FAIL});
     throw new BadRequestException(`Insuficient amount!!!!!`);
    }
    if(wallet_cred.currency !== wallet_deb.currency){
@@ -40,10 +39,10 @@ export class TransactionsService {
    if(createTransactionDto.wallet_credited ===createTransactionDto.wallet_debited){
     throw new BadRequestException(`Wallet debited #: ${createTransactionDto.wallet_debited} and Wallet credited #: ${createTransactionDto.wallet_credited} are the same!!!`);
    }
-   const isSuccessTrans = await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transactioonRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
+   const isSuccessTrans = await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
     balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount});
    if(!isSuccessTrans){
-    await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transactioonRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
+    await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
       balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount,status:TransactionStatus.FAIL});
    
     throw new BadRequestException(`Error in performing ${createTransactionDto.type} operation.`);
@@ -63,7 +62,7 @@ export class TransactionsService {
   },userId);
     // check the success of the balance on both accounts
    if(!updateWallet_debited && !updateWallet_creadited ){
-     await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transactioonRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
+     await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
       balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount,status:TransactionStatus.FAIL});
      
     throw new BadRequestException(`Error occurs updating the balances!!!`);
@@ -73,7 +72,9 @@ export class TransactionsService {
     throw new BadRequestException(err.message);
   }
   }
-
+createReference(strType:string){
+  return strType.substring(0,3)+ new Date().getFullYear() + new Date().getMonth()+ new Date().getDay() + new Date().getHours()+ new Date().getMinutes() + new Date().getSeconds();  
+}
   async findAll() {
     return await this.transactionsRepository.getAllTransaction();
   }
