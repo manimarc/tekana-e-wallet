@@ -7,11 +7,12 @@ import { UsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports:[PassportModule,
-    MongooseModule.forFeature([{name:User.name,schema:UserSchema}])
+  imports: [
+    PassportModule,
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService,UsersRepository],
-  exports:[UsersService,UsersRepository]
+  providers: [UsersService, UsersRepository],
+  exports: [UsersService, UsersRepository],
 })
 export class UsersModule {}

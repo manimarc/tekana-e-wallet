@@ -14,8 +14,23 @@ import { UsersModule } from 'src/users/users.module';
 import { User, UserSchema } from 'src/users/entities/user.entity';
 
 @Module({
-  imports:[UsersModule,WalletModule,MongooseModule.forFeature([{name:Transaction.name,schema:TransactionSchema},{name:Wallet.name,schema:WalletSchema},{name:User.name,schema:UserSchema}])],
+  imports: [
+    UsersModule,
+    WalletModule,
+    MongooseModule.forFeature([
+      { name: Transaction.name, schema: TransactionSchema },
+      { name: Wallet.name, schema: WalletSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
+  ],
   controllers: [TransactionsController],
-  providers: [TransactionsService,TransactionsRepository,WalletRepository,WalletService,UsersService,UsersRepository]
+  providers: [
+    TransactionsService,
+    TransactionsRepository,
+    WalletRepository,
+    WalletService,
+    UsersService,
+    UsersRepository,
+  ],
 })
 export class TransactionsModule {}

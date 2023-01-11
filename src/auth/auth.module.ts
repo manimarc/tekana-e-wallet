@@ -8,17 +8,19 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
-  imports:[UsersModule,
-  JwtModule.registerAsync({
-    useFactory:(configService:ConfigService) =>({
-      secret: configService.get<string>('JWT_SECRET'),
-      signOptions: {
-        expiresIn:`${configService.get('JWT_EXPIRATION_TIME')}s`
-      }
+  imports: [
+    UsersModule,
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}s`,
+        },
+      }),
+      inject: [ConfigService],
     }),
-    inject:[ConfigService]
-  })],
+  ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy]
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

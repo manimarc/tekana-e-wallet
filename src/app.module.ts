@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule,ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,29 +14,32 @@ import { SeedsModule } from './seeder.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal:true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
-    imports:[ConfigModule],
-    useFactory:async(configService:ConfigService)=>({
-      uri:configService.get<String>('MONGODB_URI'),
-      useCreateIndex: true,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+        useCreateIndex: true,
+      }),
+      inject: [ConfigService],
     }),
-    inject:[ConfigService]
-  }),
     UsersModule,
     AuthModule,
     WalletModule,
-    TransactionsModule,SeedsModule],
+    TransactionsModule,
+    SeedsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
-    provide:APP_GUARD,
-    useClass: JwtAuthGuard,
-  },
-  {
-    provide:APP_GUARD,
-  useClass:RolesGuard
-},
-],
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
