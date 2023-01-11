@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { now } from 'mongoose';
 import { TransactionStatus } from 'src/common';
 import { WalletRepository } from 'src/wallet/wallet.repository';
 import { WalletService } from 'src/wallet/wallet.service';

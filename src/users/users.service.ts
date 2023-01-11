@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import {hash,compare} from 'bcrypt';
 import { UserStatus } from 'src/common';
 import { CreateUserDto } from './dto/request/create-user.dto';
@@ -53,8 +53,8 @@ private async validateCreateUserEmail(createUserDto:CreateUserDto){
 async  getUserById(userId:string):Promise<UserResponse>{
 const user = await this.usersRepository.getUserById(userId);
 if(!user){
-  throw new NotFoundException(`User not found by _id: ${userId}`);
-}
+  throw new HttpException(`User not found for _id: ${userId} !!!`, HttpStatus.NOT_FOUND);
+ }
 return this.buildResponse(user);
 }
  async findAll():Promise<any> {
@@ -66,8 +66,8 @@ return this.buildResponse(user);
   async findOne(id: string):Promise<UserResponse> {
     const user = await this.usersRepository.getUserById(id);
     if(!user){
-      throw new BadRequestException(`User does not exists for _id: ${id}.`)
-    }
+      throw new HttpException(`User not found for _id: ${id} !!!`, HttpStatus.NOT_FOUND);
+ }
     return this.buildResponse(user);
   }
 

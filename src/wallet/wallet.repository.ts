@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Wallet } from "./entities/wallet.entity";
@@ -24,7 +24,7 @@ export class WalletRepository{
         try{
              const wallet = await this.wallet.findOne({user_id:userId});
         if(!wallet){
-            throw new BadRequestException(`Wallet for userid: ${userId} not found!!!!`);
+            throw new HttpException(`Wallet for userId: ${userId} not found!!`, HttpStatus.NOT_FOUND);
         }
         return wallet;
         }catch(err){
@@ -47,8 +47,8 @@ export class WalletRepository{
         try{
         const wallet = await this.wallet.findById(id);
         if(!wallet){
-            throw new BadRequestException(`Wallet with _id: ${id} not found!!.`);
-        }
+            throw new HttpException(`Wallet for _id: ${id} not found!!`, HttpStatus.NOT_FOUND);
+         }
         return wallet;
     }catch(err){
         throw new BadRequestException(err.message);
@@ -72,7 +72,7 @@ return await this.wallet.find();
         try{
            const wallet = await this.wallet.findByIdAndUpdate(id,data,{new:true});
         if(!wallet){
-            throw new BadRequestException(`Wallet with _id: ${id} not found!!.`);
+            throw new HttpException(`Wallet for _id: ${id} not found!!`, HttpStatus.NOT_FOUND);
         }
         return wallet; 
         }catch(err){

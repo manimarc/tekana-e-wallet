@@ -1,6 +1,6 @@
 
 
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Transaction } from "./entities/transaction.entity";
@@ -25,8 +25,8 @@ export class TransactionsRepository{
         try{
         const transaction = await this.transaction.findOne({user_id:userId});
         if(!transaction){
-            throw new BadRequestException(`transaction for userid: ${userId} not found!!!!`);
-        }
+            throw new HttpException(`Transaction  for userid: ${userId} not found!!!`, HttpStatus.NOT_FOUND);
+   }
         return transaction;
     }catch(err){
         throw new BadRequestException(err.message);
@@ -37,7 +37,7 @@ export class TransactionsRepository{
         try{
         const transaction = await this.transaction.find( {$and: [{user_id:userId,currency:currencyCode} ]});
         if(!transaction){
-            throw new BadRequestException(`transaction for userid: ${userId} and currency: ${currencyCode} not found!!!`);
+            throw new HttpException(`Transaction  for userid: ${userId} and currency: ${currencyCode}  not found!!!`, HttpStatus.NOT_FOUND);
         }
 
         return transaction
@@ -50,8 +50,8 @@ export class TransactionsRepository{
         try{
         const transaction = await this.transaction.findById(id);
         if(!transaction){
-            throw new BadRequestException(`transaction with _id: ${id} not found!!.`);
-        }
+            throw new HttpException(`Transaction  for userid: ${id} not found!!!`, HttpStatus.NOT_FOUND);
+         }
         return transaction;
     }catch(err){
         throw new BadRequestException(err.message);
@@ -78,8 +78,8 @@ return await this.transaction.findByIdAndDelete(id);
         try{
         const transaction = await this.transaction.findByIdAndUpdate(id,data,{new:true});
         if(!transaction){
-            throw new BadRequestException(`transaction with _id: ${id} not found!!.`);
-        }
+            throw new HttpException(`Transaction  for userid: ${id} not found!!!`, HttpStatus.NOT_FOUND);
+          }
         return transaction;
     }catch(err){
         throw new BadRequestException(err.message);

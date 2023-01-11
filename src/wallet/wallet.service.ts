@@ -1,5 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/users/users.repository';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
@@ -14,7 +13,6 @@ export class WalletService {
   async create(createWalletDto: CreateWalletDto,userId:string):Promise<Wallet> {
     let {user_id,...rest} = createWalletDto;
     const isUniqueUserAndCurrency = await this.walletRepository.getWalletByCurrencyAndUserId(user_id,rest.currency);
-    console.log("marc:"+isUniqueUserAndCurrency.length);
     if(isUniqueUserAndCurrency.length>0 ){
       throw new BadRequestException(`Wallet account should be unique for currency: ${rest.currency}. instead use wallet _id: ${isUniqueUserAndCurrency[0]} !!!`);
     }
@@ -27,7 +25,7 @@ export class WalletService {
 async getWalletByUserId(userId:string):Promise<any>{
 const wallet=  await this.walletRepository.findWalletByUserId(userId);
 if(!wallet){
-  throw new BadRequestException(`Wallet for userid: ${userId}  not found!!!`);
+  throw new HttpException(`Wallet for userid: ${userId} not found!!`, HttpStatus.NOT_FOUND);
 }
 const user = await this.usersService.getUserById(wallet.user_id);
   return {wallet,user};
@@ -35,15 +33,15 @@ const user = await this.usersService.getUserById(wallet.user_id);
 async getWalletByUserIdAndCurrency(userId:string, currency:string):Promise<any>{
 const wallet = await this.walletRepository.getWalletByCurrencyAndUserId(userId,currency);
 if(!wallet){
-  throw new BadRequestException(`Wallet for userid: ${userId} and currency: ${currency} not found!!!`);
-}
+  throw new HttpException(`Wallet for userid: ${userId} and currency: ${currency} not found!!`, HttpStatus.NOT_FOUND);
+  }
   const user = await this.usersService.getUserById( wallet[0].user_id);
   return {wallet,user};
 }
   async findOne(id: string) {
     const wallet = await this.walletRepository.getWalletById(id);
     if(!wallet){
-      throw new BadRequestException(`Wallet for _id: ${id} not found!!`);
+       throw new HttpException(`Wallet for _id: ${id} not found!!`, HttpStatus.NOT_FOUND);
     }
   const user = await this.usersService.getUserById(wallet.user_id);
  return {wallet,user};
@@ -66,7 +64,7 @@ if(!wallet){
   try{
   const wallet = await this.walletRepository.getWalletById(id);
   if(!wallet){
-      throw new BadRequestException(`Wallet _id: ${id} not found!!!`);
+      throw new HttpException(`Wallet for _id: ${id} not found!!`, HttpStatus.NOT_FOUND);
   }
   const currentBalance = wallet.balance;
   if(wallet.currency !== updateWalletDto.currency){
