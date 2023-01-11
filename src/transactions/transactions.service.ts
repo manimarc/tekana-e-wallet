@@ -41,27 +41,23 @@ export class TransactionsService {
    if(createTransactionDto.wallet_credited ===createTransactionDto.wallet_debited){
     throw new BadRequestException(`Wallet debited #: ${createTransactionDto.wallet_debited} and Wallet credited #: ${createTransactionDto.wallet_credited} are the same!!!`);
    }
-   const isSuccessTrans = await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
+   const promiseIsSuccessTrans = this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
     balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount});
-   if(!isSuccessTrans){
-    await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
-      balance_before_credited:wallet_cred.balance,balance_after_credited:wallet_cred.balance+createTransactionDto.credited_amount,status:TransactionStatus.FAIL});
-   
-    throw new BadRequestException(`Error in performing ${createTransactionDto.type} operation.`);
-   }
+ 
    // update the balance for debited wallet
-   const updateWallet_debited= await this.walletService.update(createTransactionDto.wallet_debited,{
+   const promiseUpdateWallet_debited=  this.walletService.update(createTransactionDto.wallet_debited,{
      balance: balance_debit,
      updatedAt: new Date(),
      updatedBy: userId,
    },userId);
    // update the balance for credited wallet
 
-   const updateWallet_creadited = await this.walletService.update(createTransactionDto.wallet_credited,{
+   const promiseUpdateWallet_creadited =  this.walletService.update(createTransactionDto.wallet_credited,{
     balance :wallet_cred.balance + createTransactionDto.credited_amount,
     updatedAt: new Date(),
     updatedBy: userId
   },userId);
+  const [isSuccessTrans,updateWallet_debited,updateWallet_creadited] = await Promise.all([promiseIsSuccessTrans,promiseUpdateWallet_debited,promiseUpdateWallet_creadited]);
     // check the success of the balance on both accounts
    if(!updateWallet_debited && !updateWallet_creadited ){
      await this.transactionsRepository.insertOne({...createTransactionDto,reference_id:transanctionRef,createdAt:new Date(),createdBy:userId,balance_before_debited:wallet_deb.balance,balance_after_debited:wallet_deb.balance-(createTransactionDto.debited_amount + createTransactionDto.fee_or_charges),
