@@ -120,6 +120,7 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 - Once the start script is done, the API Gateway will be listening on [http://localhost:3000](http://localhost:3000)
+- Testing tool is [Postman](https://www.postman.com/)
 
 ## Mongodb design
 
