@@ -1,7 +1,28 @@
 # Tekana-e-wallet Project READYME
 ## Action Plan 
-### Day 1-4
+### Day 1-5
+### Back-end solution
+The Goal is to build from scratch a back-end solution that serves 1 million customers around the world.
+### Project Scope
+This project will be limited to the design and development of a new e-wallet solution with the enumerated activities:
+- Gather requirements analysis
+- Make a deep research and analysis of latest technology stack
+- Development and testing features
+- Deploy the deleverables into production
+### Strategies and Techniniques
+1. Meeting with the business team, front-end team, UI or UX Engineers and Product Owner allows to get insigth of the intended system.
+2. Determine the programming language , framework, database, hosting infrasture due to besiness requirements, scalability, data types, availability and security
+3. Follow engineering best practices, such as writing clean, well-documented code and performing thorough testing.
+5. Design , code and deploy
+### Methodology
+Agile methodology is used by breaking the project into phases and emphasizes continuous collaboration and improvement
+
 #### Gather requirements analysis from users (User stories)
+The mimimum required features to be built are:
+    - Create, Read customers (Registration)
+    - Create and read wallets of customers
+    - Create and read transactions.
+And turned into user stories as a way formulate the tasks and selecting the priority:
 - As a wallet user I want a system that allows me to perform online registration so that i can start using it
 - As a wallet user I want a system that allows me login so that i feel confident of my wallet security
 - As a wallet user I want an interface that allows me to transfer wallet from my accounts to another user's account so that so that payments become easy
@@ -19,17 +40,14 @@ As wallet administrator I want a system that allows me to list all users so that
 - As I work in a team and adopting agile SDLC model scrum is preferable so that scrum master will be able to monitor the progress of the project
 - different tools to monitor the project and allow the whole team to know the progress are available such as Jira, ClickUp, ...
 #### Choose the best technology to handle 1 million of users.
-- Server : Linux (Ubuntu prefered)
+- Server : Linux version 20.4 (Ubuntu prefered)
 - Docker image (to allow easy installation and configuration)
-- Nestjs
-- Typescript
-- MongoDb (due to its scalability and performance compared to structured query languages)
-## Day 5-8
-- Create Users end-points
-- Perform Authentication(username and possword, token should be accessible using http only to avoid hackers accessing it using javascript, encrypt the password using bcrypt library ) and Authorization (limiting some resources based on user role).
-- Create Wallet end-points
-- Create Transaction end-points
-## Day 8-9
+
+- [NestJS + Express](https://nestjs.com/) allows to develop API that listens to HTTP request and handle responses
+- [Typescript](https://www.typescriptlang.org/) Which means it checks if the specified types match before running the code, not while running the code.
+- [MongoDb](https://www.mongodb.com/docs/) (due to its scalability and performance compared to structured query languages)
+- Microservice Layer: [RabbitMQ](https://www.rabbitmq.com/), it is a language agnostic microservice architecture; It allows variations of pub-sub, request-response, and point to point pattern; rabbitMQ can be synchronous/ asynchronous; push based approach; priotirize messages and decoupled consumer queues
+
 #### End points documentation
 
 | ADDRESS:://{ }                             | METHOD | NOTES                                                                                | REQUEST                                                           | RESPONSE                                                                                                                                                                                              |
@@ -53,12 +71,21 @@ As wallet administrator I want a system that allows me to list all users so that
 Tekana-e-wallet system is a system that will allow all users around the world to transfer, send, receive, deposit, pay, borrow wallet with an easy way.
 
 ## Installation
-
+- Clone the repository
+```
+git clone https://github.com/manimarc/tekana-e-wallet.git
+```
+- Configure and run docker compose file
 ```bash
 # copy .env.example into .env for environment configuration
 $ sudo cp .env.example  .env
 # Download and install Mongodb image using docker composer
 $ sudo docker-compose up   -d
+
+```
+- Install dependencies
+
+```bash
 # packages using yarn for the app
 $ yarn install
 ```
@@ -92,12 +119,31 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
+- Once the start script is done, the API Gateway will be listening on [http://localhost:3000](http://localhost:3000)
 
 ## Mongodb design
 
 ![database structure](wallet%20db%20design.png)
 
-## Version plan
-1. Refund customers
-2. convert one currency to another
-3. perform end to end testing
+# Roadmap
+
+### General
+
+- [ ] Add Integration Tests
+- [ ] Add CI/CD Pipeline
+- [ ] Add Kubernetes Manifests
+- [x] Pre-populate DBs
+- [ ] Configure NGinx Load Balancer
+- [ ] Distributed Tracing
+
+### API Gateway
+- [ ] convert one currency to another
+- [ ] Refund customers
+- [ ] Add request/input data validation
+- [ ] Add Logs Monitoring
+
+### Microservices and Database
+
+- [ ] Add unit tests
+- [ ] Add caching with Redis
+- [ ] Configure database replica set
